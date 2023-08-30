@@ -18,7 +18,10 @@
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.5"
+    "react-icons": "^4.8.0",
+    "react-textarea-autosize": "^8.4.1",
+    "typescript": "4.9.5",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
