@@ -1,8 +1,13 @@
-import { Header } from "@/components/Header";
-import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+
+  // if (typeof window !== "undefined") {
+  //   router.push("/app");
+  // }
+
   return (
     <main className={`min-h-screen font-inter`}>
       <section className="max-w-screen-lg mx-auto py-64 flex justify-center">

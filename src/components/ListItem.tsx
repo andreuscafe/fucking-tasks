@@ -6,7 +6,8 @@ import {
   BiCircle,
   BiMenu,
   BiRightIndent,
-  BiChevronDown
+  BiChevronDown,
+  BiX
 } from "react-icons/bi";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
@@ -31,8 +32,6 @@ export const ListItem: FC<ListItemProps> = ({
   const [subTasks, setSubTasks] = useState(getSubTasks(taskData.id) || []);
   const [openSubtasks, setOpenSubtasks] = useState(true);
 
-  console.log("rendering", taskData.id);
-
   const refreshSubTasks = useCallback(() => {
     setSubTasks(getSubTasks(taskData.id) || []);
   }, [taskData.id, getSubTasks]);
@@ -40,13 +39,7 @@ export const ListItem: FC<ListItemProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // if there isn't a value and key is delete, delete the task
     if (!e.currentTarget.value && e.key === "Backspace") {
-      removeTask(taskData.id);
-
-      dispatchEvent("removedtask", {
-        listId: taskData.listId,
-        parentId: taskData.parentId,
-        taskId: taskData.id
-      });
+      deleteTask();
       return;
     }
 
@@ -115,19 +108,21 @@ export const ListItem: FC<ListItemProps> = ({
     });
   };
 
+  const deleteTask = () => {
+    removeTask(taskData.id);
+
+    dispatchEvent("removedtask", {
+      listId: taskData.listId,
+      parentId: taskData.parentId,
+      taskId: taskData.id
+    });
+  };
+
   const listenerNewTask = useCallback(
     (e: CustomEventInit) => {
       // Refresh subtasks
       if (e.detail.parentId === taskData.id) {
         refreshSubTasks();
-      }
-
-      // Focus textarea
-      if (e.detail.taskId === taskData.id) {
-        console.log("focus textarea", taskData.id);
-        if (textareaRef.current) {
-          textareaRef.current.focus();
-        }
       }
     },
     [taskData.id, refreshSubTasks]
@@ -149,7 +144,7 @@ export const ListItem: FC<ListItemProps> = ({
     <li>
       {/* Main task */}
       <div
-        className={`group/item relative flex gap-1 py-2 items-start leading-6 transition-opacity ${
+        className={`group/item relative flex gap-1 items-start leading-6 transition-opacity ${
           completed ? "opacity-40" : ""
         }`}
       >
@@ -173,7 +168,8 @@ export const ListItem: FC<ListItemProps> = ({
             handleComplete(taskData.id);
           }}
         >
-          <BiCircle size={36} />
+          {/* <BiCircle size={36} /> */}
+          <div className="w-8 h-8 border-[2px] border-neutral-700 rounded-full" />
           {completed && (
             <BiCheck
               size={36}
@@ -183,21 +179,34 @@ export const ListItem: FC<ListItemProps> = ({
         </button>
         <ReactTextareaAutosize
           ref={textareaRef}
-          placeholder="Something to do..."
-          className={`text-lg placeholder:text-[#333] bg-transparent w-full resize-none outline-none focus:bg-white focus:bg-opacity-10 transition-colors py-1 px-2 rounded  ${
+          placeholder="Algo que hacer..."
+          className={`text-lg text-neutral-400 placeholder:text-[#333] bg-transparent w-full resize-none outline-none focus:bg-neutral-900 focus:bg-opacity-20 transition-colors py-1 px-2 rounded  ${
             completed ? "line-through" : ""
           }`}
           rows={1}
           defaultValue={taskData.content}
           onKeyDown={handleKeyDown}
           onChange={handleChange}
+          data-taskid={taskData.id}
         />
-        <button
+        {/* <button
           type="button"
           className="group/subtask w-10 absolute right-0 top-0 translate-x-full h-full flex items-center justify-center cursor-pointer focus:outline-none"
           onClick={handleAddSubTask}
+          tabIndex={-1}
         >
           <BiRightIndent
+            size={24}
+            className="opacity-0 group-hover/item:opacity-30 group-focus-within/item:opacity-30 group-hover/subtask:!opacity-100 group-focus-within/subtask:!opacity-100 transition-opacity"
+          />
+        </button> */}
+        <button
+          type="button"
+          className="group/subtask w-10 absolute right-0 top-0 translate-x-full h-full flex items-center justify-center cursor-pointer focus:outline-none"
+          onClick={deleteTask}
+          tabIndex={-1}
+        >
+          <BiX
             size={24}
             className="opacity-0 group-hover/item:opacity-30 group-focus-within/item:opacity-30 group-hover/subtask:!opacity-100 group-focus-within/subtask:!opacity-100 transition-opacity"
           />

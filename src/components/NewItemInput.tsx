@@ -44,14 +44,15 @@ export const NewItemInput: FC<NewItemInputProps> = ({
   };
 
   return (
-    <li className={`relative flex gap-1 py-2 items-start leading-6 group/item`}>
+    <li className={`relative flex gap-1 items-start leading-6 group/item`}>
       {/* <BiCircle size={36} className="flex-shrink-0 opacity-20" /> */}
       <TextareaAutosize
         ref={textAreaRef}
-        placeholder="Write a new task"
+        placeholder="Escribí una nueva tarea..."
         className="text-lg placeholder:text-[#666] bg-transparent w-full resize-none outline-none focus:bg-white focus:bg-opacity-5 py-1 px-2 rounded"
         rows={1}
         onKeyDown={handleKeyDown}
+        id="new-task-input"
       />
     </li>
   );

@@ -15,19 +15,38 @@ export const List: FC<ListProps> = ({ listData }) => {
 
   const refreshTasks = useCallback(
     (e: CustomEventInit) => {
-      console.log("refresh tasks", e.detail.listId);
+      console.log("refresh tasks", e.detail.listId, e.detail.taskId);
 
       if (e.detail.listId === listData.id) {
         setTasks(useTasksStore.getState().getListTasks(listData.id));
       }
+
+      setTimeout(() => {
+        // Focus textarea
+        if (e.detail.taskId) {
+          const textarea = document.querySelector(
+            `textarea[data-taskid="${e.detail.taskId}"]`
+          ) as HTMLTextAreaElement;
+
+          if (textarea) {
+            textarea.focus();
+          } else {
+            const lastTask = document.querySelector(
+              `textarea[data-taskid="${tasks[tasks.length - 1].id}"]`
+            ) as HTMLTextAreaElement;
+
+            if (lastTask) {
+              lastTask.focus();
+            }
+          }
+        }
+      }, 10);
     },
-    [listData.id]
+    [listData.id, tasks]
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoaded(true);
-    }, 300);
+    setLoaded(true);
 
     if (window) {
       window.addEventListener("newtask", refreshTasks);
@@ -43,13 +62,13 @@ export const List: FC<ListProps> = ({ listData }) => {
   }, [tasks, refreshTasks]);
 
   return (
-    <section className="p-10 mb-10 rounded-3xl backdrop-blur-xl border border-white border-opacity-40">
-      <div className="pb-8 mb-8 border-b border-white border-opacity-40 flex justify-between">
+    <section className="p-10 mb-10 rounded-3xl backdrop-blur-xl border-[2px] border-neutral-700">
+      {/* <div className="pb-8 mb-8 border-b-[2px] border-neutral-700 flex justify-between">
         <span>Today</span>
-        <span className="text-white text-opacity-60">Mon, 13th.</span>
-      </div>
+        <span className="text-white text-opacity-60">Clear</span>
+      </div> */}
       {/* Tasks list */}
-      <ul className="flex flex-col justify-start">
+      <ul className="flex flex-col justify-start gap-2">
         {loaded ? (
           <>
             {tasks
@@ -57,10 +76,11 @@ export const List: FC<ListProps> = ({ listData }) => {
               .map((task) => (
                 <ListItem key={task.id} taskData={task} />
               ))}
-            <NewItemInput listId={listData.id} />
+
+            {!tasks.length && <NewItemInput listId={listData.id} />}
           </>
         ) : (
-          <span className="opacity-40">Loading tasks...</span>
+          <span className="opacity-40 p-4 block">Loading tasks...</span>
         )}
       </ul>
     </section>

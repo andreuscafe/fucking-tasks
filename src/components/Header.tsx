@@ -10,7 +10,7 @@ export const Header = () => {
 
   return (
     <header className="w-full max-w-screen-sm mx-auto px-5 fixed top-4 left-1/2 -translate-x-1/2">
-      <div className="h-20 px-6 rounded-3xl border border-white border-opacity-40 backdrop-blur-xl flex items-center justify-between">
+      <div className="h-20 px-6 rounded-3xl border border-neutral-700 backdrop-blur-xl flex items-center justify-between">
         <div className="flex gap-1">
           <BiLeftArrowAlt size={24} />
           <Link href={"/"}>Today</Link>
