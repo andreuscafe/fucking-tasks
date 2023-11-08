@@ -42,7 +42,7 @@ export default function App() {
 
       <main className="w-full max-w-screen-sm mx-auto px-5 min-h-screen pb-20 font-inter flex flex-col justify-start">
         <section className="max-w-screen-lg mx-auto py-10 block w-full text-center">
-          <p className="text-neutral-700">{clientPhrase}</p>
+          <p className="text-neutral-600">{clientPhrase}</p>
         </section>
 
         {clientLists?.map((list) => (

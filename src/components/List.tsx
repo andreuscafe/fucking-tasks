@@ -63,7 +63,7 @@ export const List: FC<ListProps> = ({ listData }) => {
 
   return (
     <section className="p-6 pb-5 mb-10 rounded-2xl backdrop-blur-xl border-[2px] border-neutral-700 relative">
-      <div className="block absolute top-0 left-4 -translate-y-1/2 bg-black">
+      <div className="block absolute top-0 left-4 -translate-y-1/2 bg-[#0A0A0A]">
         <span className="p-4 whitespace-pre opacity-0">{listData.title}</span>
         <input
           onChange={(e) => {
@@ -78,7 +78,7 @@ export const List: FC<ListProps> = ({ listData }) => {
       </div>
 
       <button
-        className="absolute top-0 right-4 -translate-y-1/2 p-2 bg-black group"
+        className="absolute top-0 right-4 -translate-y-1/2 p-2 bg-[#0A0A0A] group"
         onClick={() => deleteList(listData.id)}
       >
         <BiX
