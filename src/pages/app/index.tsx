@@ -55,21 +55,6 @@ export default function App() {
         >
           Agregar lista
         </button>
-
-        {/* {loaded ? (
-          <>
-            {lists?.map((list) => (
-              <List key={list.id} listData={list} />
-            ))}
-            <button className="w-full py-6 opacity-40 hover:opacity-100 transition-opacity rounded-2xl border-[2px] border-white border-opacity-20">
-              Agregar lista
-            </button>
-          </>
-        ) : (
-          <span className="opacity-40 text-center p-8 block">
-            Loading lists...
-          </span>
-        )} */}
       </main>
     </>
   );

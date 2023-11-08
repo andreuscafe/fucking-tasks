@@ -1,6 +1,16 @@
 import { ListType, useTasksStore } from "@/store";
 import { FC, useCallback, useEffect, useState } from "react";
-import { BiTrash, BiX } from "react-icons/bi";
+import {
+  BiChevronDown,
+  BiCollapse,
+  BiFolder,
+  BiFolderOpen,
+  BiMinus,
+  BiOutline,
+  BiStrikethrough,
+  BiTrash,
+  BiX
+} from "react-icons/bi";
 import { ListItem } from "./ListItem";
 import { NewItemInput } from "./NewItemInput";
 
@@ -12,7 +22,8 @@ export const List: FC<ListProps> = ({ listData }) => {
   const [tasks, setTasks] = useState(
     useTasksStore.getState().getListTasks(listData.id)
   );
-  const { updateListTitle, deleteList } = useTasksStore.getState();
+  const { updateListTitle, deleteList, setFoldedList } =
+    useTasksStore.getState();
   const [loaded, setLoaded] = useState(false);
 
   const refreshTasks = useCallback(
@@ -77,34 +88,45 @@ export const List: FC<ListProps> = ({ listData }) => {
         />
       </div>
 
-      <button
-        className="absolute top-0 right-4 -translate-y-1/2 p-2 bg-[#0A0A0A] group"
-        onClick={() => deleteList(listData.id)}
-      >
-        <BiX
-          size={24}
-          className="opacity-40 group-hover:opacity-100 transition-opacity"
-        />
-      </button>
+      <div className="absolute top-0 right-4 -translate-y-1/2 flex">
+        <button
+          className="p-2 bg-[#0A0A0A] group"
+          onClick={() => deleteList(listData.id)}
+        >
+          <BiX
+            size={24}
+            className="opacity-40 group-hover:opacity-100 transition-opacity"
+          />
+        </button>
+        <button
+          className="p-2 bg-[#0A0A0A] group"
+          onClick={() => setFoldedList(listData.id, !listData.folded)}
+        >
+          <BiChevronDown
+            size={24}
+            className={`opacity-40 group-hover:opacity-100 transition-all duration-300 ${
+              !listData.folded ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+      </div>
 
       {/* <div className="pb-8 mb-8 border-b-[2px] border-neutral-700 flex justify-between">
         <span>{listData.title}</span>
       </div> */}
       {/* Tasks list */}
-      <ul className="flex flex-col justify-start gap-2">
-        {loaded ? (
-          <>
-            {tasks
-              .filter((t) => !t.parentId)
-              .map((task) => (
-                <ListItem key={task.id} taskData={task} />
-              ))}
+      <ul
+        className={`flex flex-col justify-start gap-2 transition-all duration-300 overflow-auto ${
+          listData.folded ? "max-h-0 overflow-hidden" : "max-h-[500px]"
+        }`}
+      >
+        {tasks
+          .filter((t) => !t.parentId)
+          .map((task) => (
+            <ListItem key={task.id} taskData={task} />
+          ))}
 
-            {!tasks.length && <NewItemInput listId={listData.id} />}
-          </>
-        ) : (
-          <span className="opacity-40 p-4 block">Loading tasks...</span>
-        )}
+        {!tasks.length && <NewItemInput listId={listData.id} />}
       </ul>
     </section>
   );

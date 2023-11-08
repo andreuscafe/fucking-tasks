@@ -14,6 +14,7 @@ export type ListType = {
   id: number;
   title: string;
   tasks: TaskType["id"][];
+  folded?: boolean;
 };
 
 export type TasksStore = {
@@ -21,6 +22,7 @@ export type TasksStore = {
   addList: () => void;
   updateListTitle: (id: ListType["id"], title: ListType["title"]) => void;
   deleteList: (id: ListType["id"]) => void;
+  setFoldedList: (id: ListType["id"], folded: ListType["folded"]) => void;
 
   tasks: TaskType[];
   addTask: (listId: ListType["id"], task?: TaskType) => TaskType;
@@ -90,6 +92,19 @@ export const useTasksStore = create(
         set((state) => ({
           lists: state.lists.filter((list) => list.id !== id)
         })),
+      setFoldedList: (id: ListType["id"], folded: ListType["folded"]) =>
+        set((state) => ({
+          lists: state.lists.map((list) => {
+            if (list.id === id) {
+              return {
+                ...list,
+                folded
+              };
+            }
+            return list;
+          })
+        })),
+
       tasks: [],
       addTask: (listId, task) => {
         const newTask = task ? task : generateEmptyTask(listId);
