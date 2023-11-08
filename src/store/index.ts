@@ -18,6 +18,10 @@ export type ListType = {
 
 export type TasksStore = {
   lists: ListType[];
+  addList: () => void;
+  updateListTitle: (id: ListType["id"], title: ListType["title"]) => void;
+  deleteList: (id: ListType["id"]) => void;
+
   tasks: TaskType[];
   addTask: (listId: ListType["id"], task?: TaskType) => TaskType;
   removeTask: (id: TaskType["id"]) => void;
@@ -54,10 +58,38 @@ export const useTasksStore = create(
       lists: [
         {
           id: 1,
-          title: "List 1",
-          tasks: [1, 2, 3]
+          title: "Nueva lista",
+          tasks: []
         }
       ],
+      addList: () => {
+        set((state) => ({
+          lists: [
+            ...state.lists,
+            {
+              id: Date.now(),
+              title: "Nueva lista",
+              tasks: []
+            }
+          ]
+        }));
+      },
+      updateListTitle: (id: ListType["id"], title: ListType["title"]) =>
+        set((state) => ({
+          lists: state.lists.map((list) => {
+            if (list.id === id) {
+              return {
+                ...list,
+                title
+              };
+            }
+            return list;
+          })
+        })),
+      deleteList: (id: ListType["id"]) =>
+        set((state) => ({
+          lists: state.lists.filter((list) => list.id !== id)
+        })),
       tasks: [],
       addTask: (listId, task) => {
         const newTask = task ? task : generateEmptyTask(listId);

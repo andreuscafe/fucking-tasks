@@ -1,5 +1,5 @@
 import { List } from "@/components/List";
-import { useTasksStore } from "@/store";
+import { ListType, useTasksStore } from "@/store";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 
@@ -21,23 +21,18 @@ export default function App() {
   const { lists } = useTasksStore((state) => ({
     lists: state.lists
   }));
+  const addList = useTasksStore.getState().addList;
   const [clientPhrase, setClientPhrase] = useState(phrases[0]);
+  const [clientLists, setClientLists] = useState<ListType[]>([]);
 
   useEffect(() => {
     setLoaded(true);
-
-    setClientPhrase(phrases[Math.floor(Math.random() * phrases.length)]);
-
-    setTimeout(() => {
-      // Focus textarea
-      const textarea = document.querySelector(
-        `#new-task-input`
-      ) as HTMLTextAreaElement;
-      if (textarea) {
-        textarea.focus();
-      }
-    }, 10);
+    setClientLists(lists);
   }, [lists]);
+
+  useEffect(() => {
+    setClientPhrase(phrases[Math.floor(Math.random() * phrases.length)]);
+  }, []);
 
   return (
     <>
@@ -45,14 +40,21 @@ export default function App() {
         <title>Today | Split up your day</title>
       </Head>
 
-      <main className="w-full max-w-screen-sm mx-auto px-5 min-h-screen pb-20 font-inter flex flex-col justify-center">
+      <main className="w-full max-w-screen-sm mx-auto px-5 min-h-screen pb-20 font-inter flex flex-col justify-start">
         <section className="max-w-screen-lg mx-auto py-10 block w-full text-center">
           <p className="text-neutral-700">{clientPhrase}</p>
         </section>
 
-        {lists?.map((list) => (
+        {clientLists?.map((list) => (
           <List key={list.id} listData={list} />
         ))}
+
+        <button
+          className="w-full py-6 opacity-40 hover:opacity-100 transition-opacity rounded-3xl border-[2px] border-white border-opacity-20"
+          onClick={() => addList()}
+        >
+          Agregar lista
+        </button>
 
         {/* {loaded ? (
           <>

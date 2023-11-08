@@ -179,7 +179,7 @@ export const ListItem: FC<ListItemProps> = ({
         </button>
         <ReactTextareaAutosize
           ref={textareaRef}
-          placeholder="Algo que hacer..."
+          placeholder="Escribí algo..."
           className={`text-lg text-neutral-400 placeholder:text-[#333] bg-transparent w-full resize-none outline-none focus:bg-neutral-900 focus:bg-opacity-20 transition-colors py-1 px-2 rounded  ${
             completed ? "line-through" : ""
           }`}
@@ -188,6 +188,8 @@ export const ListItem: FC<ListItemProps> = ({
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           data-taskid={taskData.id}
+          autoComplete="off"
+          spellCheck="false"
         />
         {/* <button
           type="button"

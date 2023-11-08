@@ -48,8 +48,8 @@ export const NewItemInput: FC<NewItemInputProps> = ({
       {/* <BiCircle size={36} className="flex-shrink-0 opacity-20" /> */}
       <TextareaAutosize
         ref={textAreaRef}
-        placeholder="Escribí una nueva tarea..."
-        className="text-lg placeholder:text-[#666] bg-transparent w-full resize-none outline-none focus:bg-white focus:bg-opacity-5 py-1 px-2 rounded"
+        placeholder="Escribí algo..."
+        className="text-lg placeholder:text-[#666] text-neutral-400 bg-transparent w-full resize-none outline-none focus:bg-white focus:bg-opacity-5 py-1 px-2 rounded"
         rows={1}
         onKeyDown={handleKeyDown}
         id="new-task-input"
