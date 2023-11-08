@@ -17,8 +17,6 @@ export const List: FC<ListProps> = ({ listData }) => {
 
   const refreshTasks = useCallback(
     (e: CustomEventInit) => {
-      console.log("refresh tasks", e.detail.listId, e.detail.taskId);
-
       if (e.detail.listId === listData.id) {
         setTasks(useTasksStore.getState().getListTasks(listData.id));
       }
@@ -64,8 +62,8 @@ export const List: FC<ListProps> = ({ listData }) => {
   }, [tasks, refreshTasks]);
 
   return (
-    <section className="p-10 mb-10 rounded-3xl backdrop-blur-xl border-[2px] border-neutral-700 relative">
-      <div className="block absolute top-0 left-8 -translate-y-1/2 bg-black">
+    <section className="p-6 pb-5 mb-10 rounded-2xl backdrop-blur-xl border-[2px] border-neutral-700 relative">
+      <div className="block absolute top-0 left-4 -translate-y-1/2 bg-black">
         <span className="p-4 whitespace-pre opacity-0">{listData.title}</span>
         <input
           onChange={(e) => {
@@ -80,7 +78,7 @@ export const List: FC<ListProps> = ({ listData }) => {
       </div>
 
       <button
-        className="absolute top-0 right-8 -translate-y-1/2 p-2 bg-black group"
+        className="absolute top-0 right-4 -translate-y-1/2 p-2 bg-black group"
         onClick={() => deleteList(listData.id)}
       >
         <BiX

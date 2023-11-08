@@ -50,7 +50,7 @@ export default function App() {
         ))}
 
         <button
-          className="w-full py-6 opacity-40 hover:opacity-100 transition-opacity rounded-3xl border-[2px] border-white border-opacity-20"
+          className="w-full py-6 opacity-40 hover:opacity-100 transition-opacity rounded-2xl border-[2px] border-white border-opacity-20"
           onClick={() => addList()}
         >
           Agregar lista
@@ -61,7 +61,7 @@ export default function App() {
             {lists?.map((list) => (
               <List key={list.id} listData={list} />
             ))}
-            <button className="w-full py-6 opacity-40 hover:opacity-100 transition-opacity rounded-3xl border-[2px] border-white border-opacity-20">
+            <button className="w-full py-6 opacity-40 hover:opacity-100 transition-opacity rounded-2xl border-[2px] border-white border-opacity-20">
               Agregar lista
             </button>
           </>

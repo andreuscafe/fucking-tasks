@@ -3,8 +3,6 @@ import type { NextRequest } from "next/server";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  console.log("redirecting.", request.nextUrl.pathname);
-
   if (request.nextUrl.pathname != "/app") {
     return NextResponse.redirect(new URL("/app", request.url));
   }

@@ -49,7 +49,7 @@ export const NewItemInput: FC<NewItemInputProps> = ({
       <TextareaAutosize
         ref={textAreaRef}
         placeholder="Escribí algo..."
-        className="text-lg placeholder:text-[#666] text-neutral-400 bg-transparent w-full resize-none outline-none focus:bg-white focus:bg-opacity-5 py-1 px-2 rounded"
+        className="text-base placeholder:text-[#666] text-neutral-400 bg-transparent w-full resize-none outline-none focus:bg-white focus:bg-opacity-5 py-1 px-2 rounded"
         rows={1}
         onKeyDown={handleKeyDown}
         id="new-task-input"

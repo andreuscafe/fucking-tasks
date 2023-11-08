@@ -46,7 +46,6 @@ export const ListItem: FC<ListItemProps> = ({
     if (e.key === "Enter" || e.key === "NumpadEnter") {
       // if cmd + enter or ctrl + enter, mark task as completed
       if (e.metaKey || e.ctrlKey) {
-        console.log("complete task", taskData.id);
         handleComplete(taskData.id);
       } else {
         e.stopPropagation();
@@ -144,11 +143,11 @@ export const ListItem: FC<ListItemProps> = ({
     <li>
       {/* Main task */}
       <div
-        className={`group/item relative flex gap-1 items-start leading-6 transition-opacity ${
+        className={`group/item relative flex gap-1 items-stretch leading-6 transition-opacity ${
           completed ? "opacity-40" : ""
         }`}
       >
-        {subTasks.length ? (
+        {/* {subTasks.length ? (
           <div
             className="w-10 absolute left-0 top-0 -translate-x-full h-full flex items-center justify-center cursor-pointer"
             onClick={() => setOpenSubtasks((o) => !o)}
@@ -158,29 +157,31 @@ export const ListItem: FC<ListItemProps> = ({
               className="opacity-30 group-hover/item:!opacity-100 transition-opacity"
             />
           </div>
-        ) : null}
+        ) : null} */}
 
-        <button
-          className="flex-shrink-0 relative"
-          tabIndex={-1}
-          role={"button"}
-          onClick={() => {
-            handleComplete(taskData.id);
-          }}
-        >
-          {/* <BiCircle size={36} /> */}
-          <div className="w-8 h-8 border-[2px] border-neutral-700 rounded-full" />
-          {completed && (
-            <BiCheck
-              size={36}
-              className="absolute w-2/3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            />
-          )}
-        </button>
+        <div>
+          <button
+            className="flex-shrink-0 relative"
+            tabIndex={-1}
+            role={"button"}
+            onClick={() => {
+              handleComplete(taskData.id);
+            }}
+          >
+            {/* <BiCircle size={36} /> */}
+            <div className="w-6 h-6 border-[2px] border-neutral-700 rounded-lg" />
+            {completed && (
+              <BiCheck
+                size={36}
+                className="absolute w-2/3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              />
+            )}
+          </button>
+        </div>
         <ReactTextareaAutosize
           ref={textareaRef}
           placeholder="Escribí algo..."
-          className={`text-lg text-neutral-400 placeholder:text-[#333] bg-transparent w-full resize-none outline-none focus:bg-neutral-900 focus:bg-opacity-20 transition-colors py-1 px-2 rounded  ${
+          className={`text-base text-neutral-400 placeholder:text-[#333] bg-transparent w-full resize-none outline-none transition-colors py-0 px-2 rounded  ${
             completed ? "line-through" : ""
           }`}
           rows={1}
@@ -204,7 +205,7 @@ export const ListItem: FC<ListItemProps> = ({
         </button> */}
         <button
           type="button"
-          className="group/subtask w-10 absolute right-0 top-0 translate-x-full h-full flex items-center justify-center cursor-pointer focus:outline-none"
+          className="group/subtask w-10 flex items-center justify-center cursor-pointer focus:outline-none"
           onClick={deleteTask}
           tabIndex={-1}
         >
