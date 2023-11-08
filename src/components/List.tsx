@@ -24,7 +24,7 @@ export const List: FC<ListProps> = ({ listData }) => {
   );
   const { updateListTitle, deleteList, setFoldedList } =
     useTasksStore.getState();
-  const [loaded, setLoaded] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const refreshTasks = useCallback(
     (e: CustomEventInit) => {
@@ -56,9 +56,15 @@ export const List: FC<ListProps> = ({ listData }) => {
     [listData.id, tasks]
   );
 
-  useEffect(() => {
-    setLoaded(true);
+  const handleDeleteList = useCallback(() => {
+    if (confirmDelete) {
+      deleteList(listData.id);
+    } else {
+      setConfirmDelete(true);
+    }
+  }, [confirmDelete, deleteList, listData.id]);
 
+  useEffect(() => {
     if (window) {
       window.addEventListener("newtask", refreshTasks);
       window.addEventListener("removedtask", refreshTasks);
@@ -73,7 +79,7 @@ export const List: FC<ListProps> = ({ listData }) => {
   }, [tasks, refreshTasks]);
 
   return (
-    <section className="p-6 pb-5 mb-10 rounded-2xl backdrop-blur-xl border-[2px] border-neutral-700 relative">
+    <section className="p-6 mb-10 rounded-2xl backdrop-blur-xl border-[2px] border-neutral-700 relative">
       <div className="block absolute top-0 left-4 -translate-y-1/2 bg-[#0A0A0A]">
         <span className="p-4 whitespace-pre opacity-0">{listData.title}</span>
         <input
@@ -90,8 +96,13 @@ export const List: FC<ListProps> = ({ listData }) => {
 
       <div className="absolute top-0 right-4 -translate-y-1/2 flex">
         <button
-          className="p-2 bg-[#0A0A0A] group"
-          onClick={() => deleteList(listData.id)}
+          className={`p-2 bg-[#0A0A0A] rounded-lg transition-colors duration-300 group ${
+            confirmDelete ? "bg-red-900" : ""
+          }`}
+          onClick={handleDeleteList}
+          onBlur={() => {
+            setConfirmDelete(false);
+          }}
         >
           <BiX
             size={24}
@@ -99,7 +110,7 @@ export const List: FC<ListProps> = ({ listData }) => {
           />
         </button>
         <button
-          className="p-2 bg-[#0A0A0A] group"
+          className="p-2 bg-[#0A0A0A] rounded-lg transition-colors duration-300 group"
           onClick={() => setFoldedList(listData.id, !listData.folded)}
         >
           <BiChevronDown

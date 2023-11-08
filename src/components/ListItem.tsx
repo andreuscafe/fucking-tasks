@@ -32,6 +32,8 @@ export const ListItem: FC<ListItemProps> = ({
   const [subTasks, setSubTasks] = useState(getSubTasks(taskData.id) || []);
   const [openSubtasks, setOpenSubtasks] = useState(true);
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   const refreshSubTasks = useCallback(() => {
     setSubTasks(getSubTasks(taskData.id) || []);
   }, [taskData.id, getSubTasks]);
@@ -107,7 +109,7 @@ export const ListItem: FC<ListItemProps> = ({
     });
   };
 
-  const deleteTask = () => {
+  const deleteTask = useCallback(() => {
     removeTask(taskData.id);
 
     dispatchEvent("removedtask", {
@@ -115,7 +117,15 @@ export const ListItem: FC<ListItemProps> = ({
       parentId: taskData.parentId,
       taskId: taskData.id
     });
-  };
+  }, [removeTask, taskData.id, taskData.listId, taskData.parentId]);
+
+  const handleDeleteButton = useCallback(() => {
+    if (confirmDelete) {
+      deleteTask();
+    } else {
+      setConfirmDelete(true);
+    }
+  }, [confirmDelete, deleteTask]);
 
   const listenerNewTask = useCallback(
     (e: CustomEventInit) => {
@@ -140,10 +150,14 @@ export const ListItem: FC<ListItemProps> = ({
   }, [listenerNewTask, refreshSubTasks]);
 
   return (
-    <li className={completed ? "order-last" : ""}>
+    <div
+      className={`focus-within:bg-[#111] p-2 rounded-lg transition-colors duration-200 ${
+        completed ? "order-last" : ""
+      }`}
+    >
       {/* Main task */}
       <div
-        className={`group/item relative flex gap-1 items-stretch leading-6 transition-opacity ${
+        className={`group/item relative flex gap-1 items-start leading-6 transition-opacity ${
           completed ? "opacity-40" : ""
         }`}
       >
@@ -159,25 +173,24 @@ export const ListItem: FC<ListItemProps> = ({
           </div>
         ) : null} */}
 
-        <div>
-          <button
-            className="flex-shrink-0 relative"
-            tabIndex={-1}
-            role={"button"}
-            onClick={() => {
-              handleComplete(taskData.id);
-            }}
-          >
-            {/* <BiCircle size={36} /> */}
-            <div className="w-6 h-6 border-[2px] border-neutral-700 rounded-lg" />
+        <button
+          className="flex-shrink-0 relative"
+          tabIndex={-1}
+          role={"button"}
+          onClick={() => {
+            handleComplete(taskData.id);
+          }}
+        >
+          {/* <BiCircle size={36} /> */}
+          <div className="w-6 h-6 border-[2px] border-neutral-700 rounded-lg overflow-hidden">
             {completed && (
               <BiCheck
-                size={36}
+                size={16}
                 className="absolute w-2/3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               />
             )}
-          </button>
-        </div>
+          </div>
+        </button>
         <ReactTextareaAutosize
           ref={textareaRef}
           placeholder="Escribí algo..."
@@ -203,14 +216,20 @@ export const ListItem: FC<ListItemProps> = ({
             className="opacity-0 group-hover/item:opacity-30 group-focus-within/item:opacity-30 group-hover/subtask:!opacity-100 group-focus-within/subtask:!opacity-100 transition-opacity"
           />
         </button> */}
+
         <button
           type="button"
-          className="group/subtask w-10 flex items-center justify-center cursor-pointer focus:outline-none"
-          onClick={deleteTask}
+          className={`group/subtask w-10 rounded-md self-stretch flex items-center justify-center cursor-pointer outline-none transition-colors duration-300 ${
+            confirmDelete ? "bg-red-900" : ""
+          }`}
+          onClick={handleDeleteButton}
+          onBlur={() => {
+            setConfirmDelete(false);
+          }}
           tabIndex={-1}
         >
           <BiX
-            size={24}
+            size={18}
             className="opacity-0 group-hover/item:opacity-30 group-focus-within/item:opacity-30 group-hover/subtask:!opacity-100 group-focus-within/subtask:!opacity-100 transition-opacity"
           />
         </button>
@@ -234,6 +253,6 @@ export const ListItem: FC<ListItemProps> = ({
           ))}
         </ul>
       ) : null}
-    </li>
+    </div>
   );
 };
