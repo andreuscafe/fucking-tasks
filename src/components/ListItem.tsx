@@ -140,7 +140,7 @@ export const ListItem: FC<ListItemProps> = ({
   }, [listenerNewTask, refreshSubTasks]);
 
   return (
-    <li>
+    <li className={completed ? "order-last" : ""}>
       {/* Main task */}
       <div
         className={`group/item relative flex gap-1 items-stretch leading-6 transition-opacity ${

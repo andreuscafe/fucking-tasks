@@ -37,7 +37,7 @@ export default function App() {
   return (
     <>
       <Head>
-        <title>Today | Split up your day</title>
+        <title>Mis listas</title>
       </Head>
 
       <main className="w-full max-w-screen-sm mx-auto px-5 min-h-screen pb-20 font-inter flex flex-col justify-start">

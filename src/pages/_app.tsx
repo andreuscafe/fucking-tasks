@@ -11,12 +11,12 @@ const inter = Inter({
   style: "normal"
 });
 
-const defaultTitle = "Daily Tasks";
+const defaultTitle = "Mis listas";
 const defaultDescription =
-  "So, everything is about what do you have to do today.";
-const defaultDomain = "daily-tasks.vercel.app";
+  "Creá listas para organizar tus tareas o recordatorios diarios.";
+const defaultDomain = "listas.andreus.cafe";
 const defaultUrl = `https://${defaultDomain}`;
-const defaultOgPath = "/img/preview.png";
+const defaultOgPath = "/img/OG.png";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
